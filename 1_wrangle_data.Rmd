@@ -13,14 +13,15 @@ source("0_helpers.R")
 ## Wrangle wrangle
 
 ```{r}
-data("msleep")
-msleep %>% 
-	mutate(eats = factor(recode(vore, "carni" = "meat", "omni" = "everything", "herbi" = "plants", "insecti" = "insects"), c("everything","plants", "insects", "meat"))) ->
-msleep
+bfi = jsonlite::fromJSON("BFI_post.json")
+bfi_items = formr_items(path = "BFI_post_items.json")
+bfi = formr_post_process_results(bfi_items, bfi)
 ```
 
 ## Save data
 ```{r}
-saveRDS(msleep, file = "msleep_processed.rds")
+saveRDS(bfi, file = "bfi.rds")
+getwd()
+haven::write_sav(bfi, path = "bfi.sav")
 ```
 
